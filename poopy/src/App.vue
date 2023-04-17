@@ -5,14 +5,20 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <img
+      alt="duck cus yes"
+      class="logo"
+      src="https://hips.hearstapps.com/hmg-prod/images/how-to-keep-ducks-call-ducks-1615457181.jpg?crop=0.6666666666666666xw:1xh;center,top&resize=980:*"
+      width="205"
+      height="205"
+    />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld msg="Leading Causes of Death in NYC" />
 
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/">Tutorial</RouterLink>
+        <RouterLink to="/about">Graph Maker</RouterLink>
       </nav>
     </div>
   </header>
