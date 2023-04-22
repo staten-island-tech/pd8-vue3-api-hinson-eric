@@ -1,26 +1,59 @@
 <script setup>
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 let year = ref('')
 let race = ref('')
 let cause = ref('')
 let sex = ref('')
 let deaths = ref('')
 let currentArray = ref([])
-let funnyApiTemp = ref(`https://data.cityofnewyork.us/resource/jb7j-dtam.json`)
-let funnyApiTemp2 = await fetch(funnyApiTemp)
-let funnyApi = await funnyApiTemp2.json()
+let ogArray = ref('')
 
-function filterArray() {
-  console.log(funnyApi)
+async function getDeaths() {
+  let temp = await fetch('https://data.cityofnewyork.us/resource/jb7j-dtam.json')
+  let temp2 = await temp.json()
+  ogArray.value = temp2
 }
-filterArray()
+
+
+
+onMounted(() => {
+  getDeaths()
+})
+  
+function filterArray(array) {
+  let filteredYear = ref([]);
+  let filteredSex = ref([]);
+let filteredRace = ref('')
+  if (year.value == "Every Year") {
+    filteredYear = ogArray
+  } else {
+    filteredYear = array.filter(element => element.year == year.value)
+  };
+  if (sex.value == "both") {
+    filteredSex = filteredYear
+  } else if (sex.value == "Male") {
+    filteredSex = (filteredYear.filter(element => element.sex == "Male")).concat(filteredYear.filter(element => element.sex == "M"))
+  } else if (sex.value == "Female") {
+    filteredSex = (filteredYear.filter(element => element.sex == "Female")).concat(filteredYear.filter(element => element.sex == "F"))
+  } else {
+    filteredSex = []
+  };
+  if (race.value == "All") {
+    filteredRace = filteredSex
+  } else {
+    filteredRace = filteredSex.filter(element => element.race_ethnicity == race.value)
+  }
+  currentArray.value = filteredRace;
+  console.log(currentArray);
+}
+
 </script>
 <template>
   <div id="duck">
     <h2>filter graph by</h2>
     <p>select year:</p>
     <select v-model="year">
-      <option>all years</option>
+      <option>Every Year</option>
       <option>2019</option>
       <option>2018</option>
       <option>2017</option>
@@ -33,18 +66,21 @@ filterArray()
     <p>select sex:</p>
     <select v-model="sex">
       <option>both</option>
-      <option>M</option>
-      <option>F</option>
+      <option>Male</option>
+      <option>Female</option>
     </select>
     <p>select race/ethnicity</p>
     <select v-model="race">
-      <option>asian</option>
-      <option>hispanic</option>
-      <option>non hispanic white</option>
-      <option>black</option>
-      <option>other</option>
+      <option>All</option>
+      <option>Asian and Pacific Islander</option>
+      <option>Hispanic</option>
+      <option>Non-Hispanic White</option>
+      <option>Non-Hispanic Black</option>
+      <option>Other Race/ Ethnicity</option>
+      <option>Not Stated/Unknown</option>
     </select>
-    <p>your year is {{ year }}, sex is {{ gender }}, races is {{ races }}</p>
+    <button id="tw" @click="filterArray(ogArray)">generate graph :D</button>
+
   </div>
 </template>
 
@@ -53,4 +89,67 @@ filterArray()
   display: flex;
   flex-direction: column;
 }
+#tw {
+  margin-top: 20px;
+  width: 100px;
+  margin-left: 230px;
+}
+button {
+  --s: .25em; /* control the wave*/
+  
+  padding: .4em .5em;
+  background-color: #00E898;
+  color: black;
+  --_s: calc(var(--s)*4) 51% repeat-x;
+  --_r: calc(1.345*var(--s)) at left 50%;
+  --_g1: #000 99%,#0000 101%;
+  --_g2: #0000 99%,#000 101%;
+  --mask:
+    radial-gradient(var(--_r) top    calc(var(--s)* 1.9),var(--_g1)) 
+     calc(50% - 2*var(--s) - var(--_i,0px)) 0/var(--_s),
+    radial-gradient(var(--_r) top    calc(var(--s)*-0.9),var(--_g2)) 
+     calc(50% - var(--_i,0px)) var(--s)/var(--_s),
+    radial-gradient(var(--_r) bottom calc(var(--s)* 1.9),var(--_g1)) 
+     calc(50% - 2*var(--s) + var(--_i,0px)) 100%/var(--_s),
+    radial-gradient(var(--_r) bottom calc(var(--s)*-0.9),var(--_g2)) 
+     calc(50% + var(--_i,0px)) calc(100% - var(--s))/var(--_s);
+  -webkit-mask: var(--mask);
+          mask: var(--mask);
+  clip-path: polygon(
+    calc(2*var(--s) - var(--_i,0px)) 0,
+    calc(100%       - var(--_i,0px)) 0, 
+    calc(100% - var(--s)) 50%,
+    calc(100% - 2*var(--s) + var(--_i,0px)) 100%,
+    calc(0%                + var(--_i,0px)) 100%, 
+    var(--s) 50%);
+  cursor: pointer;
+  transition: .35s;
+}
+button.alt {
+  clip-path: polygon(
+    calc(0%                - var(--_i,0px)) 0,
+    calc(100% - 2*var(--s) - var(--_i,0px)) 0, 
+    calc(100% - var(--s)) 50%,
+    calc(100%       + var(--_i,0px)) 100%,
+    calc(2*var(--s) + var(--_i,0px)) 100%, 
+    var(--s) 50%);
+}
+button:hover {
+  --_i: calc(2*var(--s));
+}
+button.alt:hover {
+  --_i: calc(-2*var(--s));
+}
+button:active {
+  background-image: linear-gradient(#0004 0 0);
+}
+button:focus-visible {
+  -webkit-mask: none;
+  clip-path: none;
+  outline-offset: .1em;
+  padding-block: .2em;
+  margin-block: .2em;
+  transition: 0s;
+}
+
 </style>

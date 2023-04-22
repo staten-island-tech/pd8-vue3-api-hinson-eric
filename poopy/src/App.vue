@@ -14,7 +14,7 @@ import HelloWorld from './components/HelloWorld.vue'
     />
 
     <div class="wrapper">
-      <HelloWorld msg="Leading Causes of Death in NYC" />
+      <HelloWorld msg="Causes of Un-natural Death in NYC" />
 
       <nav>
         <RouterLink to="/">Tutorial</RouterLink>
