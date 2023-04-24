@@ -1,10 +1,21 @@
 <script setup>
-import { ref,onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
+import { Bar } from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
+} from 'chart.js'
+
 let year = ref('')
 let race = ref('')
 let cause = ref('')
 let sex = ref('')
-let deaths = ref('')
+let deaths = ref([])
 let currentArray = ref([])
 let ogArray = ref('')
 
@@ -14,40 +25,78 @@ async function getDeaths() {
   ogArray.value = temp2
 }
 
-
-
 onMounted(() => {
   getDeaths()
 })
-  
+
+function pasteGraph(array) {}
+
 function filterArray(array) {
-  let filteredYear = ref([]);
-  let filteredSex = ref([]);
-let filteredRace = ref('')
-  if (year.value == "Every Year") {
+  let filteredYear = ref([])
+  let filteredSex = ref([])
+  let filteredRace = ref('')
+  if (year.value == 'Every Year') {
     filteredYear = ogArray
   } else {
-    filteredYear = array.filter(element => element.year == year.value)
-  };
-  if (sex.value == "both") {
+    filteredYear = array.filter((element) => element.year == year.value)
+  }
+  if (sex.value == 'both') {
     filteredSex = filteredYear
-  } else if (sex.value == "Male") {
-    filteredSex = (filteredYear.filter(element => element.sex == "Male")).concat(filteredYear.filter(element => element.sex == "M"))
-  } else if (sex.value == "Female") {
-    filteredSex = (filteredYear.filter(element => element.sex == "Female")).concat(filteredYear.filter(element => element.sex == "F"))
+  } else if (sex.value == 'Male') {
+    filteredSex = filteredYear
+      .filter((element) => element.sex == 'Male')
+      .concat(filteredYear.filter((element) => element.sex == 'M'))
+  } else if (sex.value == 'Female') {
+    filteredSex = filteredYear
+      .filter((element) => element.sex == 'Female')
+      .concat(filteredYear.filter((element) => element.sex == 'F'))
   } else {
     filteredSex = []
-  };
-  if (race.value == "All") {
+  }
+  if (race.value == 'All') {
     filteredRace = filteredSex
   } else {
-    filteredRace = filteredSex.filter(element => element.race_ethnicity == race.value)
+    filteredRace = filteredSex.filter((element) => element.race_ethnicity == race.value)
   }
-  currentArray.value = filteredRace;
-  console.log(currentArray);
+  currentArray.value = filteredRace
+  console.log(currentArray)
 }
-
 </script>
+
+<script>
+import { Bar } from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
+} from 'chart.js'
+
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+
+export default {
+  name: 'BarChart',
+  components: { Bar },
+  data() {
+    return {
+      chartData: {
+        labels: ['January', 'February', 'March'],
+        datasets: [
+          {
+            label: 'Data One',
+            backgroundColor: '#f87979',
+            data: [40, 20, 12]
+          }
+        ]
+      }
+    }
+  }
+}
+</script>
+
 <template>
   <div id="duck">
     <h2>filter graph by</h2>
@@ -80,8 +129,9 @@ let filteredRace = ref('')
       <option>Not Stated/Unknown</option>
     </select>
     <button id="tw" @click="filterArray(ogArray)">generate graph :D</button>
-
+    <Bar :data="chartData" />
   </div>
+  <div></div>
 </template>
 
 <style>
@@ -95,50 +145,51 @@ let filteredRace = ref('')
   margin-left: 230px;
 }
 button {
-  --s: .25em; /* control the wave*/
-  
-  padding: .4em .5em;
-  background-color: #00E898;
+  --s: 0.25em; /* control the wave*/
+
+  padding: 0.4em 0.5em;
+  background-color: #00e898;
   color: black;
-  --_s: calc(var(--s)*4) 51% repeat-x;
-  --_r: calc(1.345*var(--s)) at left 50%;
-  --_g1: #000 99%,#0000 101%;
-  --_g2: #0000 99%,#000 101%;
-  --mask:
-    radial-gradient(var(--_r) top    calc(var(--s)* 1.9),var(--_g1)) 
-     calc(50% - 2*var(--s) - var(--_i,0px)) 0/var(--_s),
-    radial-gradient(var(--_r) top    calc(var(--s)*-0.9),var(--_g2)) 
-     calc(50% - var(--_i,0px)) var(--s)/var(--_s),
-    radial-gradient(var(--_r) bottom calc(var(--s)* 1.9),var(--_g1)) 
-     calc(50% - 2*var(--s) + var(--_i,0px)) 100%/var(--_s),
-    radial-gradient(var(--_r) bottom calc(var(--s)*-0.9),var(--_g2)) 
-     calc(50% + var(--_i,0px)) calc(100% - var(--s))/var(--_s);
+  --_s: calc(var(--s) * 4) 51% repeat-x;
+  --_r: calc(1.345 * var(--s)) at left 50%;
+  --_g1: #000 99%, #0000 101%;
+  --_g2: #0000 99%, #000 101%;
+  --mask: radial-gradient(var(--_r) top calc(var(--s) * 1.9), var(--_g1))
+      calc(50% - 2 * var(--s) - var(--_i, 0px)) 0 / var(--_s),
+    radial-gradient(var(--_r) top calc(var(--s) * -0.9), var(--_g2)) calc(50% - var(--_i, 0px))
+      var(--s) / var(--_s),
+    radial-gradient(var(--_r) bottom calc(var(--s) * 1.9), var(--_g1))
+      calc(50% - 2 * var(--s) + var(--_i, 0px)) 100% / var(--_s),
+    radial-gradient(var(--_r) bottom calc(var(--s) * -0.9), var(--_g2)) calc(50% + var(--_i, 0px))
+      calc(100% - var(--s)) / var(--_s);
   -webkit-mask: var(--mask);
-          mask: var(--mask);
+  mask: var(--mask);
   clip-path: polygon(
-    calc(2*var(--s) - var(--_i,0px)) 0,
-    calc(100%       - var(--_i,0px)) 0, 
+    calc(2 * var(--s) - var(--_i, 0px)) 0,
+    calc(100% - var(--_i, 0px)) 0,
     calc(100% - var(--s)) 50%,
-    calc(100% - 2*var(--s) + var(--_i,0px)) 100%,
-    calc(0%                + var(--_i,0px)) 100%, 
-    var(--s) 50%);
+    calc(100% - 2 * var(--s) + var(--_i, 0px)) 100%,
+    calc(0% + var(--_i, 0px)) 100%,
+    var(--s) 50%
+  );
   cursor: pointer;
-  transition: .35s;
+  transition: 0.35s;
 }
 button.alt {
   clip-path: polygon(
-    calc(0%                - var(--_i,0px)) 0,
-    calc(100% - 2*var(--s) - var(--_i,0px)) 0, 
+    calc(0% - var(--_i, 0px)) 0,
+    calc(100% - 2 * var(--s) - var(--_i, 0px)) 0,
     calc(100% - var(--s)) 50%,
-    calc(100%       + var(--_i,0px)) 100%,
-    calc(2*var(--s) + var(--_i,0px)) 100%, 
-    var(--s) 50%);
+    calc(100% + var(--_i, 0px)) 100%,
+    calc(2 * var(--s) + var(--_i, 0px)) 100%,
+    var(--s) 50%
+  );
 }
 button:hover {
-  --_i: calc(2*var(--s));
+  --_i: calc(2 * var(--s));
 }
 button.alt:hover {
-  --_i: calc(-2*var(--s));
+  --_i: calc(-2 * var(--s));
 }
 button:active {
   background-image: linear-gradient(#0004 0 0);
@@ -146,10 +197,9 @@ button:active {
 button:focus-visible {
   -webkit-mask: none;
   clip-path: none;
-  outline-offset: .1em;
-  padding-block: .2em;
-  margin-block: .2em;
+  outline-offset: 0.1em;
+  padding-block: 0.2em;
+  margin-block: 0.2em;
   transition: 0s;
 }
-
 </style>
