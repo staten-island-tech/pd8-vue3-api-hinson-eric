@@ -15,7 +15,7 @@ let year = ref('')
 let race = ref('')
 let cause = ref('')
 let sex = ref('')
-let deaths = ref([])
+let deaths = ref('')
 let currentArray = ref([])
 let ogArray = ref('')
 
@@ -62,7 +62,6 @@ function filterArray(array) {
   console.log(currentArray)
 }
 </script>
-
 <script>
 import { Bar } from 'vue-chartjs'
 import {
@@ -88,7 +87,7 @@ export default {
           {
             label: 'Data One',
             backgroundColor: '#f87979',
-            data: [40, 21, 12]
+            data: [40, 20, 12]
           }
         ]
       }
@@ -129,9 +128,9 @@ export default {
       <option>Not Stated/Unknown</option>
     </select>
     <button id="tw" @click="filterArray(ogArray)">generate graph :D</button>
+
     <Bar :data="chartData" />
   </div>
-  <div></div>
 </template>
 
 <style>
