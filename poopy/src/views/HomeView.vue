@@ -88,7 +88,7 @@ export default {
           {
             label: 'Data One',
             backgroundColor: '#f87979',
-            data: [40, 20, 12]
+            data: [40, 21, 12]
           }
         ]
       }
