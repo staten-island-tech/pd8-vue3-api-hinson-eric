@@ -11,6 +11,7 @@ import {
   LinearScale
 } from 'chart.js'
 
+let yes = ref(false)
 let year = ref('')
 let race = ref('')
 let cause = ref('')
@@ -59,7 +60,20 @@ function filterArray(array) {
     filteredRace = filteredSex.filter((element) => element.race_ethnicity == race.value)
   }
   currentArray.value = filteredRace
+  let ways2die = []
+  filteredRace.forEach((element) => ways2die.push(element.leading_cause))
   console.log(currentArray)
+  cause.value = ways2die
+  let currentDeaths = []
+  filteredRace.forEach((element) => currentDeaths.push(element.deaths))
+  console.log(ways2die)
+  deaths.value = currentDeaths
+  if ((yes.value = false)) {
+    yes.value = true
+    console.log('test')
+  } else {
+    console.log('test2')
+  }
 }
 </script>
 <script>
@@ -82,12 +96,12 @@ export default {
   data() {
     return {
       chartData: {
-        labels: ['January', 'February', 'March'],
+        labels: ['amongus', 'butthole', 'pp'],
         datasets: [
           {
             label: 'Data One',
             backgroundColor: '#f87979',
-            data: [40, 20, 12]
+            data: [2, 3, 4]
           }
         ]
       }
