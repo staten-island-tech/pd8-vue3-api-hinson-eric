@@ -1,36 +1,27 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue'
 
-
-import { Bar } from 'vue-chartjs'
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale
-} from 'chart.js'
-
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+import { Pie } from 'vue-chartjs'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+ChartJS.register(ArcElement, Tooltip, Legend)
 
 let yes = ref(false)
 let year = ref('')
 let race = ref('')
-let cause = ref(["bro you did something wrong, remake the graph"])
+let cause = ref(['bro you did something wrong, remake the graph'])
 let sex = ref('')
-let deaths = ref(["69"])
+let deaths = ref(['69'])
 let currentArray = ref([])
 let ogArray = ref('')
 let chartData2 = ref({
   labels: cause.value,
-        datasets: [
-          {
-            label: 'Data One',
-            backgroundColor: '#f87979',
-            data: deaths.value
-          }]
+  datasets: [
+    {
+      label: 'Data One',
+      backgroundColor: '#f87979',
+      data: deaths.value
+    }
+  ]
 })
 
 async function getDeaths() {
@@ -81,18 +72,17 @@ function filterArray(array) {
   deaths.value = currentDeaths
   console.log(yes)
 
-    chartData2 =  ref({
-  labels: ways2die,
-        datasets: [
-          {
-            label: 'Data One',
-            backgroundColor: '#f87979',
-            data: currentDeaths
-          }]
-})
+  chartData2 = ref({
+    labels: ways2die,
+    datasets: [
+      {
+        label: 'Data One',
+        backgroundColor: '#f87979',
+        data: currentDeaths
+      }
+    ]
+  })
 }
-
-
 </script>
 
 <template>
@@ -125,10 +115,12 @@ function filterArray(array) {
       <option>Other Race/ Ethnicity</option>
       <option>Not Stated/Unknown</option>
     </select>
-    <button v-if="yes" @click="yes = !yes, window.location.reload();">make a new graph!!!!!</button>
-    <button v-else @click="yes = !yes, filterArray(ogArray)">generate graph :D</button>
+    <button v-if="yes" @click=";(yes = !yes), window.location.reload()">
+      make a new graph!!!!!
+    </button>
+    <button v-else @click=";(yes = !yes), filterArray(ogArray)">generate graph :D</button>
 
-    <Bar :data="chartData2" v-if="yes"/>
+    <Pie :data="chartData2" v-if="yes" />
     <p v-else>click the button to create a graph!</p>
   </div>
 </template>

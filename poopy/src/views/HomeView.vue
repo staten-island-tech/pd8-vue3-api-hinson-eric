@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue'
 
-
 import { Bar } from 'vue-chartjs'
 import {
   Chart as ChartJS,
@@ -18,19 +17,20 @@ ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 let yes = ref(false)
 let year = ref('')
 let race = ref('')
-let cause = ref(["test"])
+let cause = ref(['test'])
 let sex = ref('')
-let deaths = ref(["69"])
+let deaths = ref(['69'])
 let currentArray = ref([])
 let ogArray = ref('')
 let chartData2 = ref({
   labels: cause.value,
-        datasets: [
-          {
-            label: 'Data One',
-            backgroundColor: '#f87979',
-            data: deaths.value
-          }]
+  datasets: [
+    {
+      label: 'Data One',
+      backgroundColor: '#f87979',
+      data: deaths.value
+    }
+  ]
 })
 
 async function getDeaths() {
@@ -81,18 +81,17 @@ function filterArray(array) {
   deaths.value = currentDeaths
   console.log(yes)
 
-    chartData2 =  ref({
-  labels: ways2die,
-        datasets: [
-          {
-            label: 'Data One',
-            backgroundColor: '#f87979',
-            data: currentDeaths
-          }]
-})
+  chartData2 = ref({
+    labels: ways2die,
+    datasets: [
+      {
+        label: 'Data One',
+        backgroundColor: '#f87979',
+        data: currentDeaths
+      }
+    ]
+  })
 }
-
-
 </script>
 
 <template>
@@ -127,9 +126,9 @@ function filterArray(array) {
       <option>Not Stated/Unknown</option>
     </select>
     <button v-if="yes" @click="yes = !yes">make a new graph!!!!!</button>
-    <button v-else @click="yes = !yes, filterArray(ogArray)">generate graph :D</button>
+    <button v-else @click=";(yes = !yes), filterArray(ogArray)">generate graph :D</button>
 
-    <Bar :data="chartData2" v-if="yes"/>
+    <Bar :data="chartData2" v-if="yes" />
     <p v-else>click the button to create a graph!</p>
   </div>
 </template>
