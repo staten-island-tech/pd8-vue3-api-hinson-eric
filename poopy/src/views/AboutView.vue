@@ -100,7 +100,6 @@ function filterArray(array) {
     <h2>filter graph by</h2>
     <p>select year:</p>
     <select v-model="year">
-      <option>Every Year</option>
       <option>2019</option>
       <option>2018</option>
       <option>2017</option>
@@ -126,7 +125,7 @@ function filterArray(array) {
       <option>Other Race/ Ethnicity</option>
       <option>Not Stated/Unknown</option>
     </select>
-    <button v-if="yes" @click="yes = !yes">make a new graph!!!!!</button>
+    <button v-if="yes" @click="yes = !yes, window.location.reload();">make a new graph!!!!!</button>
     <button v-else @click="yes = !yes, filterArray(ogArray)">generate graph :D</button>
 
     <Bar :data="chartData2" v-if="yes"/>
