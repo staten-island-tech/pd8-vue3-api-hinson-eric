@@ -18,7 +18,7 @@ let chartData2 = ref({
   datasets: [
     {
       label: 'Data One',
-      backgroundColor: '#f87979',
+      backgroundColor: '#52b69a',
       data: deaths.value
     }
   ]
@@ -77,7 +77,7 @@ function filterArray(array) {
     datasets: [
       {
         label: 'Data One',
-        backgroundColor: '#f87979',
+        backgroundColor: '#52b69a',
         data: currentDeaths
       }
     ]
