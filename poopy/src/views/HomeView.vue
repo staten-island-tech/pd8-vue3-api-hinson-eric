@@ -1,5 +1,7 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
+
+
 import { Bar } from 'vue-chartjs'
 import {
   Chart as ChartJS,
@@ -11,14 +13,25 @@ import {
   LinearScale
 } from 'chart.js'
 
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+
 let yes = ref(false)
 let year = ref('')
 let race = ref('')
-let cause = ref('')
+let cause = ref(["test"])
 let sex = ref('')
-let deaths = ref('')
+let deaths = ref(["69"])
 let currentArray = ref([])
 let ogArray = ref('')
+let chartData2 = ref({
+  labels: cause.value,
+        datasets: [
+          {
+            label: 'Data One',
+            backgroundColor: '#f87979',
+            data: deaths.value
+          }]
+})
 
 async function getDeaths() {
   let temp = await fetch('https://data.cityofnewyork.us/resource/jb7j-dtam.json')
@@ -62,52 +75,24 @@ function filterArray(array) {
   currentArray.value = filteredRace
   let ways2die = []
   filteredRace.forEach((element) => ways2die.push(element.leading_cause))
-  console.log(currentArray)
   cause.value = ways2die
   let currentDeaths = []
   filteredRace.forEach((element) => currentDeaths.push(element.deaths))
-  console.log(ways2die)
   deaths.value = currentDeaths
-  if ((yes.value = false)) {
-    yes.value = true
-    console.log('test')
-  } else {
-    console.log('test2')
-  }
-}
-</script>
-<script>
-import { Bar } from 'vue-chartjs'
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale
-} from 'chart.js'
+  console.log(yes)
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
-
-export default {
-  name: 'BarChart',
-  components: { Bar },
-  data() {
-    return {
-      chartData: {
-        labels: ['amongus', 'butthole', 'pp'],
+    chartData2 =  ref({
+  labels: ways2die,
         datasets: [
           {
             label: 'Data One',
             backgroundColor: '#f87979',
-            data: [2, 3, 4]
-          }
-        ]
-      }
-    }
-  }
+            data: currentDeaths
+          }]
+})
 }
+
+
 </script>
 
 <template>
@@ -141,9 +126,11 @@ export default {
       <option>Other Race/ Ethnicity</option>
       <option>Not Stated/Unknown</option>
     </select>
-    <button id="tw" @click="filterArray(ogArray)">generate graph :D</button>
+    <button v-if="yes" @click="yes = !yes">make a new graph!!!!!</button>
+    <button v-else @click="yes = !yes, filterArray(ogArray)">generate graph :D</button>
 
-    <Bar :data="chartData" />
+    <Bar :data="chartData2" v-if="yes"/>
+    <p v-else>click the button to create a graph!</p>
   </div>
 </template>
 
@@ -158,6 +145,7 @@ export default {
   margin-left: 230px;
 }
 button {
+  margin-bottom: 20px;
   --s: 0.25em; /* control the wave*/
 
   padding: 0.4em 0.5em;

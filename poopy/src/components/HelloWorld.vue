@@ -10,7 +10,7 @@ defineProps({
 <template>
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
-    <h3>Ducks are not one of the leading causes of death</h3>
+    <h3>Ducks are not one of the leading causes of death. for bar graph, y axis is # of deaths, x is causes. For pie graph, use your imagination</h3>
   </div>
 </template>
 

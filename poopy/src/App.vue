@@ -17,8 +17,8 @@ import HelloWorld from './components/HelloWorld.vue'
       <HelloWorld msg="Causes of Un-natural Death in NYC" />
 
       <nav>
-        <RouterLink to="/">Tutorial</RouterLink>
-        <RouterLink to="/about">Graph Maker</RouterLink>
+        <RouterLink to="/">bar graph</RouterLink>
+        <RouterLink to="/about">pi(e) graph</RouterLink>
       </nav>
     </div>
   </header>
