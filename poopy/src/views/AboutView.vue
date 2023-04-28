@@ -77,7 +77,19 @@ function filterArray(array) {
     datasets: [
       {
         label: 'Data One',
-        backgroundColor: '#52b69a',
+        backgroundColor: [
+          '#ffc8dd',
+          '#52b69a',
+          '#adc178',
+          '#7209b7',
+          '#f18701',
+          '#ccc5b9',
+          '#ee6055',
+          '#ffd100',
+          '#202020',
+          '#772f1a',
+          '#001d4a'
+        ],
         data: currentDeaths
       }
     ]
