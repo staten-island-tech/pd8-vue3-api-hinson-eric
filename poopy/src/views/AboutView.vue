@@ -88,7 +88,9 @@ function filterArray(array) {
           '#ffd100',
           '#202020',
           '#772f1a',
-          '#001d4a'
+          '#001d4a',
+          '#63adf2',
+          '#ff5d8f'
         ],
         data: currentDeaths
       }
